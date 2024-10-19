@@ -1,46 +1,37 @@
-// import Header from './Components/Header/Header';
-// import React, { useState } from 'react';
-// // import AssignmentTable from './Components/student/AssignmentTable';
-// import AssignmentTableTeacher from './Components/teacher/AssignmentTableTeacher';
-// import Login from './Components/Login';
-// import StudentTable from './Components/teacher/StudentTable';
-// function App() {
-//   const [activeTab, setActiveTab] = useState('Overdue');
-//   return (
-//     <div className="min-h-screen bg-gray-100">
-//     <Header activeTab={activeTab} setActiveTab={setActiveTab} />
-//     <div className="container mx-auto">
-//       {/* <AssignmentTable activeTab={activeTab} /> */}
-//       {/* <Login/> */}
-//       <AssignmentTableTeacher />
-     
-//     </div>
-//   </div>
-//   // 
-//   )
-// }
-
-// export default App
-
-
 import Header from './Components/Header/Header';
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import AssignmentTableTeacher from './Components/TeacherDashBoard/AssignmentTableTeacher.jsx';
-import Login from './Components/Login';
-import StudentTable from './Components/teacher/StudentTable';
+import Login from './Components/authentication/Login';
 import AssignmentTable from './Components/student/AssignmentTable';
-function App() {  
+import { useAuth } from './Components/authentication/AuthContext';
+
+function App() {
+  const { user, login } = useAuth();
   const [activeTab, setActiveTab] = useState('Overdue');
+
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    if (storedUser) {
+      login(storedUser);
+    }
+  }, [login]);
+
+  const handleLoginSuccess = (userData) => {
+    localStorage.setItem('user', JSON.stringify(userData)); // Store user data in local storage
+    login(userData);
+  };
 
   return (
     <div className="min-h-screen bg-gray-100">
       <Header activeTab={activeTab} setActiveTab={setActiveTab} />
       <div className="container mx-auto">
-        {/* Conditional rendering based on the active tab */}
-        {/* <AssignmentTableTeacher /> */}
-     
-          {/* <AssignmentTable /> */}
+        {!user ? (
+          <Login onLoginSuccess={handleLoginSuccess} />
+        ) :  user.role.trim() === "Teacher" ? (
           <AssignmentTableTeacher />
+        ) : (
+          <AssignmentTable /> 
+        )}
       </div>
     </div>
   );

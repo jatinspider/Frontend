@@ -1,13 +1,16 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../authentication/AuthContext";
 
 const Header = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth(); // Get user and logout function from AuthContext
   const [activeTab, setActiveTab] = useState("Overdue");
+
   const handleLogout = () => {
-    // Implement logout logic here
+    logout(); // Call logout function from context
     console.log("Logging out...");
-    navigate("/login");
+    navigate("/");
   };
 
   return (
@@ -31,12 +34,14 @@ const Header = () => {
           </button>
         </nav>
 
-        <button
-          onClick={handleLogout}
-          className="text-lg text-white bg-red-500 px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300"
-        >
-          Logout
-        </button>
+        {user ? ( // Check if user is logged in
+          <button
+            onClick={handleLogout}
+            className="text-lg text-white bg-red-500 px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300"
+          >
+            Logout
+          </button>
+        ) : null}
 
         {/* Mobile Menu Button */}
         <div className="md:hidden">
@@ -88,16 +93,17 @@ const Header = () => {
         >
           Profile
         </button>
-        <button
-          onClick={handleLogout}
-          className="block text-lg text-white bg-red-500 px-4 py-2 rounded hover:bg-red-600"
-        >
-          Logout
-        </button>
+        {user && ( // Show logout button only if user is logged in
+          <button
+            onClick={handleLogout}
+            className="block text-lg text-white bg-red-500 px-4 py-2 rounded hover:bg-red-600"
+          >
+            Logout
+          </button>
+        )}
       </nav>
 
       {/* Nav Pills */}
-
       <nav className="bg-gray-100 p-4 border-b">
         <ul className="flex justify-center space-x-4">
           <li>
@@ -109,7 +115,7 @@ const Header = () => {
                   : "bg-gray-200 hover:bg-gray-300"
               }`}
             >
-              Overdue Assignment
+              Overdue Assignments
             </button>
           </li>
           <li>
@@ -121,7 +127,7 @@ const Header = () => {
                   : "bg-gray-200 hover:bg-gray-300"
               }`}
             >
-              Ongoing Assignment
+              Ongoing Assignments
             </button>
           </li>
           <li>
@@ -133,7 +139,7 @@ const Header = () => {
                   : "bg-gray-200 hover:bg-gray-300"
               }`}
             >
-              Completed Assignment
+              Completed Assignments
             </button>
           </li>
         </ul>

@@ -1,37 +1,42 @@
-//import axios from "axios";
-import { useState } from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
-function Login() {
+
+function Login({ onLoginSuccess }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  // const [message, setMessage] = useState("");
+  const [message, setMessage] = useState("");
 
-  // const handleLogin = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await axios.post(
-  //       "http://localhost:5184/api/authenticate",
-  //       {
-  //         username,
-  //         password,
-  //       }
-  //     );
-  //     setMessage(response.data.message);
-  //   } catch (error) {
-  //     setMessage("Login failed. Please try again.");
-  //   }
-  // };
-  const handleLogin = () => {
-    // Replace this with your authentication logic
-    if (username === "student" && password === "1234") {
-      navigate("/StudentTable");
-    } else if (username === "teacher" && password === "2143") {
-      navigate("/AssignmentTable");
-    } else {
-      alert("Invalid credentials");
+  const handleLogin = async (e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5164/api/authentication/login",
+        {
+          email: username, // Assuming you're using email as the username
+          password,
+        }
+      );
+
+      if (response.data) {
+        onLoginSuccess(response.data); // Pass user data to the success handler
+        // Navigate based on the role
+        if (response.data.roletrim() === "Teacher" ) {
+          navigate("/teacher");
+        } else {
+          navigate("/student");
+        }
+      } else {
+        setMessage("Invalid credentials");
+      }
+    } catch (error) {
+      console.error("Login error:", error); // Log the error to the console
+      setMessage("Login failed. Please try again.");
     }
   };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
       <div className="w-full max-w-md p-8 space-y-8 bg-white shadow-lg rounded-lg">
@@ -42,15 +47,12 @@ function Login() {
           Sign in to your account
         </h2>
 
-        {/* {error && <p className="mt-4 text-center text-red-600">{error}</p>} */}
+        {message && <p className="mt-4 text-center text-red-600">{message}</p>}
 
         <form onSubmit={handleLogin} className="mt-6 space-y-6">
           <div>
-            <label
-              htmlFor="username"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Username :
+            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+              Username:
             </label>
             <input
               id="username"
@@ -63,10 +65,7 @@ function Login() {
           </div>
 
           <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
               Password:
             </label>
             <input
