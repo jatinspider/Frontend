@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -9,6 +9,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
+import PropTypes from "prop-types";
 
 export default function AssignmentDialog({
   open,
@@ -18,6 +19,29 @@ export default function AssignmentDialog({
   formData,
   editIndex,
 }) {
+  // Reset form data on close
+  useEffect(() => {
+    if (!open) {
+      // Reset form data if needed
+      onChange({ target: { name: "course", value: "" } });
+      onChange({ target: { name: "subjectName", value: "" } });
+      onChange({ target: { name: "assignmentDescription", value: "" } });
+      onChange({ target: { name: "createDate", value: "" } });
+      onChange({ target: { name: "dueDate", value: "" } });
+    }
+  }, [open, onChange]);
+
+  // Function to check if any fields are empty
+  const isFormValid = () => {
+    return (
+      formData.course &&
+      formData.subjectName &&
+      formData.assignmentDescription &&
+      formData.createDate &&
+      formData.dueDate
+    );
+  };
+
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>
@@ -82,10 +106,26 @@ export default function AssignmentDialog({
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
-        <Button onClick={onSubmit}>
+        <Button onClick={onSubmit} disabled={!isFormValid()}>
           {editIndex !== null ? "Update" : "Create"}
         </Button>
       </DialogActions>
     </Dialog>
   );
 }
+
+// PropTypes validation for the props
+AssignmentDialog.propTypes = {
+  open: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  formData: PropTypes.shape({
+    course: PropTypes.string.isRequired,
+    subjectName: PropTypes.string.isRequired,
+    assignmentDescription: PropTypes.string.isRequired,
+    createDate: PropTypes.string.isRequired,
+    dueDate: PropTypes.string.isRequired,
+  }).isRequired,
+  editIndex: PropTypes.number,
+};
