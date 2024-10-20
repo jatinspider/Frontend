@@ -103,47 +103,49 @@ const Header = () => {
         )}
       </nav>
 
-      {/* Nav Pills */}
-      <nav className="bg-gray-100 p-4 border-b">
-        <ul className="flex justify-center space-x-4">
-          <li>
-            <button
-              onClick={() => setActiveTab("Overdue")}
-              className={`px-6 py-3 text-sm font-medium rounded-lg transition-all ${
-                activeTab === "Overdue"
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-200 hover:bg-gray-300"
-              }`}
-            >
-              Overdue Assignments
-            </button>
-          </li>
-          <li>
-            <button
-              onClick={() => setActiveTab("Ongoing")}
-              className={`px-6 py-3 text-sm font-medium rounded-lg transition-all ${
-                activeTab === "Ongoing"
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-200 hover:bg-gray-300"
-              }`}
-            >
-              Ongoing Assignments
-            </button>
-          </li>
-          <li>
-            <button
-              onClick={() => setActiveTab("Completed")}
-              className={`px-6 py-3 text-sm font-medium rounded-lg transition-all ${
-                activeTab === "Completed"
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-200 hover:bg-gray-300"
-              }`}
-            >
-              Completed Assignments
-            </button>
-          </li>
-        </ul>
-      </nav>
+      {/* Nav Pills - Only show if user is a student */}
+      {user && user.role.trim() === "Student" && ( // Check user role
+        <nav className="bg-gray-100 p-4 border-b">
+          <ul className="flex justify-center space-x-4">
+            <li>
+              <button
+                onClick={() => setActiveTab("Overdue")}
+                className={`px-6 py-3 text-sm font-medium rounded-lg transition-all ${
+                  activeTab === "Overdue"
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200 hover:bg-gray-300"
+                }`}
+              >
+                Overdue Assignments
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => setActiveTab("Ongoing")}
+                className={`px-6 py-3 text-sm font-medium rounded-lg transition-all ${
+                  activeTab === "Ongoing"
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200 hover:bg-gray-300"
+                }`}
+              >
+                Ongoing Assignments
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => setActiveTab("Completed")}
+                className={`px-6 py-3 text-sm font-medium rounded-lg transition-all ${
+                  activeTab === "Completed"
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200 hover:bg-gray-300"
+                }`}
+              >
+                Completed Assignments
+              </button>
+            </li>
+          </ul>
+        </nav>
+      )}
     </header>
   );
 };
