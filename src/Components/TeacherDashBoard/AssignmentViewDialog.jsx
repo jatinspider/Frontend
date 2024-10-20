@@ -21,7 +21,7 @@ export default function AssignmentViewDialog({ open, onClose, formData }) {
           {formData.assignmentDescription}
         </p>
         <p>
-          <strong>Create Date:</strong> {formData.createDate}
+          <strong>Created Date:</strong> {formData.createDate}
         </p>
         <p>
           <strong>Due Date:</strong> {formData.dueDate}
