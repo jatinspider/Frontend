@@ -94,7 +94,7 @@ const AssignmentTable = ({ activeTab }) => {
         <thead className="bg-gray-200">
           <tr>
             <th className="border border-gray-300 px-6 py-2">Index</th>
-            <th className="border border-gray-300 px-6 py-2">Assignment Name</th>
+            {/* <th className="border border-gray-300 px-6 py-2">Assignment Name</th> */}
             <th className="border border-gray-300 px-6 py-2">Assignment Description</th>
             <th className="border border-gray-300 px-6 py-2">Subject</th>
             <th className="border border-gray-300 px-6 py-2">Created Date</th>
@@ -109,7 +109,7 @@ const AssignmentTable = ({ activeTab }) => {
               <React.Fragment key={assignment.id}>
                 <tr>
                   <td className="border border-gray-300 px-6 py-2 text-center">{index + 1}</td>
-                  <td className="border border-gray-300 px-6 py-2">{assignment.name}</td>
+                  {/* <td className="border border-gray-300 px-6 py-2">{assignment.name}</td> */}
                   <td className="border border-gray-300 px-6 py-2">{assignment.description}</td>
                   <td className="border border-gray-300 px-6 py-2">{assignmentData.subjectName}</td>
                   <td className="border border-gray-300 px-6 py-2">{formatDate(assignment.createdDate)}</td>
