@@ -19,7 +19,6 @@ const formatDate = (isoString) => {
 
 const AssignmentTable = ({ activeTab }) => {
   const [assignments, setAssignments] = useState([]);
-  const [subjects, setSubjects] = useState([]); // State to store subjects
   const [submittedAssignment, setSubmittedAssignment] = useState(null);
   const [code, setCode] = useState("");
   const [file, setFile] = useState(null);
@@ -36,19 +35,7 @@ const AssignmentTable = ({ activeTab }) => {
       }
     };
 
-    // Fetch subjects from the API
-    const fetchSubjects = async () => {
-      try {
-        const response = await fetch("http://localhost:5164/api/Subjects"); // Update with your API endpoint
-        const data = await response.json();
-        setSubjects(data); // Store subjects in state
-      } catch (error) {
-        console.error("Error fetching subjects:", error);
-      }
-    };
-
     fetchAssignments();
-    fetchSubjects();
   }, []);
 
   const handleFileChange = (e) => {
@@ -116,72 +103,73 @@ const AssignmentTable = ({ activeTab }) => {
           </tr>
         </thead>
         <tbody>
-          {assignments.map((assignment, index) => (
-            <React.Fragment key={assignment.id}>
-              <tr>
-                <td className="border border-gray-300 px-6 py-2 text-center">{index + 1}</td>
-                <td className="border border-gray-300 px-6 py-2">{assignment.name}</td>
-                <td className="border border-gray-300 px-6 py-2">{assignment.description}</td>
-                <td className="border border-gray-300 px-6 py-2">
-                  {subjects.find(subject => subject.id === assignment.subjectId)?.name || "N/A"} {/* Find subject name */}
-                </td>
-                <td className="border border-gray-300 px-6 py-2">{formatDate(assignment.createdDate)}</td>
-                <td className="border border-gray-300 px-6 py-2">{formatDate(assignment.dueDate)}</td>
-                <td className="border border-gray-300 px-6 py-2 text-center">
-                  {activeTab !== "Completed" ? (
-                    <button
-                      className="bg-blue-500 text-white px-4 py-2 rounded"
-                      onClick={() => handleSubmitClick(assignment.id)}
-                    >
-                      Submit Assignment
-                    </button>
-                  ) : (
-                    <button className="bg-green-500 text-white px-4 py-2 rounded">
-                      View Score
-                    </button>
-                  )}
-                </td>
-              </tr>
-
-              {submittedAssignment === assignment.id && (
+          {assignments.map((assignmentData, index) => {
+            const assignment = assignmentData.assignment; // Get the assignment object
+            return (
+              <React.Fragment key={assignment.id}>
                 <tr>
-                  <td colSpan="7" className="border border-gray-300 p-4 bg-gray-100">
-                    <h3 className="text-xl font-semibold mb-4">
-                      Submit Code and File for Assignment {assignment.name}
-                    </h3>
-                    <div className="mb-4">
-                      <label className="block text-sm font-medium text-gray-700">
-                        Enter Code:
-                      </label>
-                      <textarea
-                        value={code}
-                        onChange={handleCodeChange}
-                        rows="4"
-                        className="mt-1 block w-full p-2 border border-gray-300 rounded"
-                        placeholder="Enter your code here"
-                      ></textarea>
-                    </div>
-                    <div className="mb-4">
-                      <label className="block text-sm font-medium text-gray-700">
-                        Upload File:
-                      </label>
-                      <input
-                        type="file"
-                        onChange={handleFileChange}
-                        className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-                      />
-                    </div>
-                    <button
-                      onClick={handleFormSubmit}
-                      className="bg-green-500 text-white px-4 py-2 rounded"
-                    >
-                      Submit
-                    </button>
+                  <td className="border border-gray-300 px-6 py-2 text-center">{index + 1}</td>
+                  <td className="border border-gray-300 px-6 py-2">{assignment.name}</td>
+                  <td className="border border-gray-300 px-6 py-2">{assignment.description}</td>
+                  <td className="border border-gray-300 px-6 py-2">{assignmentData.subjectName}</td>
+                  <td className="border border-gray-300 px-6 py-2">{formatDate(assignment.createdDate)}</td>
+                  <td className="border border-gray-300 px-6 py-2">{formatDate(assignment.dueDate)}</td>
+                  <td className="border border-gray-300 px-6 py-2 text-center">
+                    {activeTab !== "Completed" ? (
+                      <button
+                        className="bg-blue-500 text-white px-4 py-2 rounded"
+                        onClick={() => handleSubmitClick(assignment.id)}
+                      >
+                        Submit Assignment
+                      </button>
+                    ) : (
+                      <button className="bg-green-500 text-white px-4 py-2 rounded">
+                        View Score
+                      </button>
+                    )}
                   </td>
                 </tr>
-              )}
-            </React.Fragment>
-          ))}
+
+                {submittedAssignment === assignment.id && (
+                  <tr>
+                    <td colSpan="7" className="border border-gray-300 p-4 bg-gray-100">
+                      <h3 className="text-xl font-semibold mb-4">
+                        Submit Code and File for Assignment {assignment.name}
+                      </h3>
+                      <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-700">
+                          Enter Code:
+                        </label>
+                        <textarea
+                          value={code}
+                          onChange={handleCodeChange}
+                          rows="4"
+                          className="mt-1 block w-full p-2 border border-gray-300 rounded"
+                          placeholder="Enter your code here"
+                        ></textarea>
+                      </div>
+                      <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-700">
+                          Upload File:
+                        </label>
+                        <input
+                          type="file"
+                          onChange={handleFileChange}
+                          className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                        />
+                      </div>
+                      <button
+                        onClick={handleFormSubmit}
+                        className="bg-green-500 text-white px-4 py-2 rounded"
+                      >
+                        Submit
+                      </button>
+                    </td>
+                  </tr>
+                )}
+              </React.Fragment>
+            );
+          })}
         </tbody>
       </table>
     </div>
