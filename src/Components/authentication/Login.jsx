@@ -13,7 +13,7 @@ function Login({ onLoginSuccess }) {
 
     try {
       const response = await axios.post(
-        "http://localhost:5164/api/authentication/login",
+        "http://localhost:5067/api/Authentication/login",
         {
           email: username, // Assuming you're using email as the username
           password,
@@ -23,7 +23,7 @@ function Login({ onLoginSuccess }) {
       if (response.data) {
         onLoginSuccess(response.data); // Pass user data to the success handler
         // Navigate based on the role
-        if (response.data.roletrim() === "Teacher" ) {
+        if (response.data.role.trim() === "Teacher" ) {
           navigate("/teacher");
         } else {
           navigate("/student");
@@ -31,10 +31,12 @@ function Login({ onLoginSuccess }) {
       } else {
         setMessage("Invalid credentials");
       }
-    } catch (error) {
-      console.error("Login error:", error); // Log the error to the console
-      setMessage("Login failed. Please try again.");
     }
+    catch (error) {
+      console.error("Login error:", error.response?.data || error.message);
+      setMessage(error.response?.data.message || "Login failed. Please try again.");
+  }
+  
   };
 
   return (
@@ -52,7 +54,7 @@ function Login({ onLoginSuccess }) {
         <form onSubmit={handleLogin} className="mt-6 space-y-6">
           <div>
             <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-              Username:
+              UserId:
             </label>
             <input
               id="username"
