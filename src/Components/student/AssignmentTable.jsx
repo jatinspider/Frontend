@@ -479,7 +479,7 @@ const AssignmentTable = ({ activeTab }) => {
             // "SubmittedCode":code,
             // "ExecutionImage":"ssss",
         
-              "id": "string122",
+              "id": "new123",
               "studentId": studentId,
               "assignmentId": submittedAssignment,
               "submittedCode": "string",
@@ -489,17 +489,28 @@ const AssignmentTable = ({ activeTab }) => {
 
           });
         alert("Form data:", formData);
-        if (response.ok) {
+        // if (response.ok) {
+        //   alert("Submission successful!");
+        //   // Reset after submission
+        //   setSubmittedAssignment(null);
+        //   setCode("");
+        //   setFile(null);
+        // } else {
+        //   const errorData = await response.json();
+        //   console.error("Submission failed:", errorData);
+        //   alert(`Submission failed: ${errorData.message || "Please try again."}`);
+        // }
+        if (response.status === 200 || response.status === 201) {
           alert("Submission successful!");
           // Reset after submission
           setSubmittedAssignment(null);
           setCode("");
           setFile(null);
         } else {
-          const errorData = await response.json();
-          console.error("Submission failed:", errorData);
-          alert(`Submission failed: ${errorData.message || "Please try again."}`);
+          console.error("Submission failed:", response.data);
+          alert(`Submission failed: ${response.data?.message || "Please try again."}`);
         }
+        
       } catch (error) {
         console.error("Error submitting assignment:", error);
         alert("Error submitting assignment. Please try again.");
@@ -587,7 +598,7 @@ const AssignmentTable = ({ activeTab }) => {
                           onChange={handleFileChange}
                           className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                         />
-                      </div> */}
+                      </div>  */}
                       <button
                         onClick={handleFormSubmit}
                         className="bg-green-500 text-white px-4 py-2 rounded"

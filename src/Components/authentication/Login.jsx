@@ -9,19 +9,19 @@ function Login({ onLoginSuccess }) {
   const [message, setMessage] = useState("");
 
   const handleLogin = async (e) => {
-    e.preventDefault(); // Prevent the default form submission behavior
+    e.preventDefault();
 
     try {
       const response = await axios.post(
         "http://localhost:5067/api/Authentication/login",
         {
-          email: username, // Assuming you're using email as the username
+          email: username, 
           password,
         }
       );
 
       if (response.data) {
-        onLoginSuccess(response.data); // Pass user data to the success handler
+        onLoginSuccess(response.data); 
         // Navigate based on the role
         if (response.data.role.trim() === "Teacher" ) {
           navigate("/teacher");
