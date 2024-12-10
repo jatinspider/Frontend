@@ -19,10 +19,8 @@ export default function AssignmentDialog({
   formData,
   editIndex,
 }) {
-  // Reset form data on close
   useEffect(() => {
     if (!open) {
-      // Reset form data if needed
       onChange({ target: { name: "course", value: "" } });
       onChange({ target: { name: "subjectName", value: "" } });
       onChange({ target: { name: "assignmentDescription", value: "" } });
@@ -31,7 +29,6 @@ export default function AssignmentDialog({
     }
   }, [open, onChange]);
 
-  // Function to check if any fields are empty
   const isFormValid = () => {
     return (
       formData.course &&

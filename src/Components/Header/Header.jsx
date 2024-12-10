@@ -4,12 +4,11 @@ import { useAuth } from "../authentication/AuthContext";
 
 const Header = () => {
   const navigate = useNavigate();
-  const { user, logout } = useAuth(); // Get user and logout function from AuthContext
+  const { user, logout } = useAuth();
   const [activeTab, setActiveTab] = useState("Overdue");
 
   const handleLogout = () => {
-    logout(); // Call logout function from context
-    console.log("Logging out...");
+    logout();
     navigate("/");
   };
 
@@ -34,7 +33,7 @@ const Header = () => {
           </button>
         </nav>
 
-        {user ? ( // Check if user is logged in
+        {user ? (
           <button
             onClick={handleLogout}
             className="text-lg text-white bg-red-500 px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300"
@@ -43,7 +42,6 @@ const Header = () => {
           </button>
         ) : null}
 
-        {/* Mobile Menu Button */}
         <div className="md:hidden">
           <button
             className="text-white focus:outline-none"
@@ -67,7 +65,6 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Mobile Menu (hidden by default) */}
       <nav className="md:hidden bg-gray-900 space-y-2 p-4">
         <button
           onClick={() => navigate("/dashboard")}
@@ -93,7 +90,7 @@ const Header = () => {
         >
           Profile
         </button>
-        {user && ( // Show logout button only if user is logged in
+        {user && (
           <button
             onClick={handleLogout}
             className="block text-lg text-white bg-red-500 px-4 py-2 rounded hover:bg-red-600"
@@ -102,8 +99,8 @@ const Header = () => {
           </button>
         )}
       </nav>
-    {/* Nav Pills - Only show if user is a student */}
-     {user && user.role.trim() === "Student" && ( // Check user role
+
+      {user && user.role.trim() === "Student" && (
         <nav className="bg-gray-100 p-4 border-b">
           <ul className="flex justify-center space-x-4">
             <li>
@@ -145,18 +142,8 @@ const Header = () => {
           </ul>
         </nav>
       )}
-      
     </header>
   );
 };
 
 export default Header;
-
-
-
-
-
-
-
-
-

@@ -1,10 +1,9 @@
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { v4 as uuidv4 } from "uuid";  // Import uuid to generate unique ID
+import { v4 as uuidv4 } from "uuid";
 
 const formatDate = (isoString) => {
-  if (!isoString) return "N/A"; // Return a default value if isoString is undefined or empty
+  if (!isoString) return "N/A";
   const date = new Date(isoString);
   return date.toLocaleString("en-US", {
     month: "long",
@@ -41,75 +40,73 @@ const AssignmentTable = ({ activeTab }) => {
 
   const handleSubmitClick = (assignmentId) => {
     setSubmittedAssignment(submittedAssignment === assignmentId ? null : assignmentId);
-    
   };
- 
- 
 
-const handleFormSubmit = async () => {
-  const studentId = localStorage.getItem("userId");
-  if (!studentId) {
-    alert("User ID not found. Please log in again.");
-    return;
-  }
-
-  if (code) {
-    const generatedId = uuidv4(); // Generate a unique ID
-
-    const submissionData = {
-      id: generatedId,
-      studentId: studentId,
-      submittedCode: code,
-      assignmentId: submittedAssignment ,
-    };
-
-    try {
-      const response = await axios.post(
-        "http://localhost:5067/api/AssignmentSubmission",
-        submissionData,  // Send the data as JSON
-        { headers: { "Content-Type": "application/json" } } // Ensure Content-Type is set to JSON
-      );
-
-      if (response.status === 200 || response.status === 201) {
-        alert("Submission successful!");
-      } else {
-        alert(`Submission failed: ${response.data?.message || "Please try again."}`);
-      }
-    } catch (error) {
-      if (error.response && error.response.data && error.response.data.errors) {
-        console.error("Validation Errors:", error.response.data.errors);
-        alert("Validation failed: " + JSON.stringify(error.response.data.errors));
-      } else {
-        console.error("Error submitting assignment:", error.message);
-        alert("Error: already Submitted");
-      }
+  const handleFormSubmit = async () => {
+    const studentId = localStorage.getItem("userId");
+    if (!studentId) {
+      alert("User ID not found. Please log in again.");
+      return;
     }
-  } else {
-    alert("Please enter the code before submitting.");
-  }
-};
 
-const checkSubmissionStatus = async (studentId, assignmentId) => {
-  try {
-    const response = await axios.get(
-      `http://localhost:5067/api/AssignmentSubmission/check-submission/${studentId}/${assignmentId}`
-    );
-    return response.data === "true"; 
-  } catch (error) {
-    console.error("Error checking submission status:", error);
-    return false;
-  }
-};
-useEffect(() => {
-  const studentId = localStorage.getItem("userId"); // Replace with actual student ID
-  assignments.forEach(async (assignment) => {
-    const isSubmitted = await checkSubmissionStatus(studentId, assignment.assignment.id);
-    setSubmittedAssignments((prev) => ({
-      ...prev,
-      [assignment.assignment.id]: isSubmitted,
-    }));
-  });
-}, [assignments]);
+    if (code) {
+      const generatedId = uuidv4();
+
+      const submissionData = {
+        id: generatedId,
+        studentId: studentId,
+        submittedCode: code,
+        assignmentId: submittedAssignment,
+      };
+
+      try {
+        const response = await axios.post(
+          "http://localhost:5067/api/AssignmentSubmission",
+          submissionData,
+          { headers: { "Content-Type": "application/json" } }
+        );
+
+        if (response.status === 200 || response.status === 201) {
+          alert("Submission successful!");
+        } else {
+          alert(`Submission failed: ${response.data?.message || "Please try again."}`);
+        }
+      } catch (error) {
+        if (error.response && error.response.data && error.response.data.errors) {
+          console.error("Validation Errors:", error.response.data.errors);
+          alert("Validation failed: " + JSON.stringify(error.response.data.errors));
+        } else {
+          console.error("Error submitting assignment:", error.message);
+          alert("Error: already Submitted");
+        }
+      }
+    } else {
+      alert("Please enter the code before submitting.");
+    }
+  };
+
+  const checkSubmissionStatus = async (studentId, assignmentId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5067/api/AssignmentSubmission/check-submission/${studentId}/${assignmentId}`
+      );
+      return response.data === "true";
+    } catch (error) {
+      console.error("Error checking submission status:", error);
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    const studentId = localStorage.getItem("userId");
+    assignments.forEach(async (assignment) => {
+      const isSubmitted = await checkSubmissionStatus(studentId, assignment.assignment.id);
+      setSubmittedAssignments((prev) => ({
+        ...prev,
+        [assignment.assignment.id]: isSubmitted,
+      }));
+    });
+  }, [assignments]);
 
   return (
     <div className="p-4">
@@ -125,7 +122,6 @@ useEffect(() => {
           </tr>
         </thead>
         <tbody>
-       
           {assignments.map((assignmentData, index) => {
             const assignment = assignmentData.assignment;
 
@@ -201,5 +197,3 @@ useEffect(() => {
 };
 
 export default AssignmentTable;
-
-

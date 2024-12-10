@@ -5,7 +5,6 @@ import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
-// Styled component for Filter
 const StyledFormControl = styled(FormControl)(({ theme }) => ({
   margin: "0 10px",
   minWidth: 180,

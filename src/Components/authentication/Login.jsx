@@ -21,9 +21,8 @@ function Login({ onLoginSuccess }) {
       );
 
       if (response.data) {
-        onLoginSuccess(response.data); 
-        // Navigate based on the role
-        if (response.data.role.trim() === "Teacher" ) {
+        onLoginSuccess(response.data);
+        if (response.data.role.trim() === "Teacher") {
           navigate("/teacher");
         } else {
           navigate("/student");
@@ -35,8 +34,7 @@ function Login({ onLoginSuccess }) {
     catch (error) {
       console.error("Login error:", error.response?.data || error.message);
       setMessage(error.response?.data.message || "Login failed. Please try again.");
-  }
-  
+    }
   };
 
   return (
