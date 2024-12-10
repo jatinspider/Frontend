@@ -62,15 +62,15 @@
 //       formData.append("assignmentId", submittedAssignment);
 //       formData.append("submittedCode", code);
 //       formData.append("executionImage", file);
-  
+
 //        // Now this will work
-  
+
 //       try {
 //         const response = await fetch("http://localhost:5067/api/AssignmentSubmission", {
 //           method: "POST",
 //           body: formData,
 //         });
-  
+
 //         if (response.ok) {
 //           console.log("Submission successful!");
 //           alert("Submission successful!");
@@ -91,8 +91,8 @@
 //       alert("Please enter the code and upload a file.");
 //     }
 //   };
-  
-  
+
+
 
 //   return (
 //     <div className="p-4">
@@ -244,7 +244,7 @@
 
 //   const handleFormSubmit = async () => {
 //     const studentId = localStorage.getItem("userId");
-    
+
 //     if (!studentId) {
 //       alert("User ID not found. Please log in again.");
 //       return;
@@ -411,23 +411,23 @@ const AssignmentTable = ({ activeTab }) => {
   useEffect(() => {
     const fetchAssignments = async () => {
       try {
-        const response = await axios.get("http://localhost:5067/api/Assignment"); 
+        const response = await axios.get("http://localhost:5067/api/Assignment");
         // const data = await response.json();
-    //     setAssignments(data);
-    //   } catch (error) {
-    //     console.error("Error fetching assignments:", error);
-    //   }
-    // };
-    //if (!response.ok) {
-    //  throw new Error(`HTTP error! status: ${response.status}`);
-   // }
-    const data = await response.data;
-    console.log("Assignments fetched:", data); // Add this
-    setAssignments(data);
-  } catch (error) {
-    console.error("Error fetching assignments:", error);
-  }
-};
+        //     setAssignments(data);
+        //   } catch (error) {
+        //     console.error("Error fetching assignments:", error);
+        //   }
+        // };
+        //if (!response.ok) {
+        //  throw new Error(`HTTP error! status: ${response.status}`);
+        // }
+        const data = await response.data;
+        console.log("Assignments fetched:", data); // Add this
+        setAssignments(data);
+      } catch (error) {
+        console.error("Error fetching assignments:", error);
+      }
+    };
     fetchAssignments();
   }, []);
 
@@ -466,9 +466,9 @@ const AssignmentTable = ({ activeTab }) => {
       const printFormData = (formData) => {
         // Using entries()
         for (const [key, value] of formData.entries()) {
-            console.log(`${key}: ${value}`);
+          console.log(`${key}: ${value}`);
         }
-      
+
       }
       printFormData(formData);
       try {
@@ -478,14 +478,14 @@ const AssignmentTable = ({ activeTab }) => {
             // "AssignmentId":submittedAssignment,
             // "SubmittedCode":code,
             // "ExecutionImage":"ssss",
-        
-              "id": "string122",
-              "studentId": studentId,
-              "assignmentId": submittedAssignment,
-              "submittedCode": "string",
-              "executionImage": "string",
-              "submittedDate": "2024-11-04T11:50:01.189Z"
-            
+
+            "id": "string122",
+            "studentId": studentId,
+            "assignmentId": submittedAssignment,
+            "submittedCode": "string",
+            "executionImage": "string",
+            "submittedDate": "2024-11-04T11:50:01.189Z"
+
 
           });
         alert("Form data:", formData);

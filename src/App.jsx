@@ -53,7 +53,7 @@ import { useAuth } from './Components/authentication/AuthContext';
 
 function App() {
   const { user, login } = useAuth();
-  const [activeTab, setActiveTab] = useState('Overdue');
+  const [activeTab, setActiveTab] = useState('Ongoing');
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem('user'));
@@ -76,7 +76,7 @@ function App() {
         {!user ? (
           <Login onLoginSuccess={handleLoginSuccess} />
         ) : user.role.trim() === "Teacher" ? (
-          <AssignmentTableTeacher />
+          <AssignmentTableTeacher userId={user.userId}/>
         ) : (
           <AssignmentTable userId={user.userId} />
         )}
